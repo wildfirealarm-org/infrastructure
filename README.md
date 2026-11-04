@@ -1,14 +1,14 @@
-# Wildfire Alarm infrastructure (biobot-infrastructure)
+# Wildfire Alarm infrastructure
 
-Docker Compose stack for the Wildfire Alarm backend: MariaDB, the `biobot-cloud`
-API, and the `biobot-dashboard` web app. The two applications are git
+Docker Compose stack for the Wildfire Alarm backend: MariaDB, the `cloud`
+API (checked out as `biobot-cloud/`), and the `dashboard` web app (`biobot-dashboard/`). The two applications are git
 submodules.
 
 ## First run
 
 ```sh
-git clone --recurse-submodules https://github.com/biobotproject-org/biobot-infrastructure
-cd biobot-infrastructure
+git clone --recurse-submodules https://github.com/wildfirealarm-org/infrastructure
+cd infrastructure
 cp .env.example .env        # then fill in real values
 docker compose up -d --build
 ```

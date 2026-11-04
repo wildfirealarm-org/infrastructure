@@ -1,3 +1,7 @@
+# Pinned so the containers and the database volume keep their names when the
+# checkout folder is renamed (the repository is now "infrastructure").
+name: biobot-infrastructure
+
 services:
   db:
     image: mariadb:11

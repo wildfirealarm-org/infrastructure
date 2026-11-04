@@ -1,6 +1,6 @@
 [submodule "biobot-cloud"]
 	path = biobot-cloud
-	url = https://github.com/biobotproject-org/biobot-cloud
+	url = https://github.com/wildfirealarm-org/cloud
 [submodule "biobot-dashboard"]
 	path = biobot-dashboard
-	url = https://github.com/biobotproject-org/biobot-dashboard
+	url = https://github.com/wildfirealarm-org/dashboard
