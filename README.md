@@ -55,13 +55,15 @@ docker compose up -d --build
 
 ## Production
 
-The public instance runs at <https://app.biobotproject.org> on the same host
-as the Laravel site. The stack lives in `/opt/biobot/biobot-infrastructure`
+The public instance runs at <https://app.wildfirealarm.org> on the same host
+as the Laravel site. The old address <https://app.biobotproject.org> serves
+the same stack and stays up until every Notehub route has moved to the new
+one. The stack lives in `/opt/biobot/biobot-infrastructure`
 and is reached through the host nginx and a Let's Encrypt certificate; the
 containers themselves are bound to loopback only.
 
 ```
-browser -> host nginx (443, app.biobotproject.org)
+browser -> host nginx (443, app.wildfirealarm.org, app.biobotproject.org)
         -> 127.0.0.1:8085 frontend container (nginx, React build)
              -> /api/ -> backend:3000 (compose network only)
                            -> db:3306   (compose network only)
@@ -78,12 +80,22 @@ the database is never published. Check the merged result with
 
 ### Reverse proxy and TLS
 
-Host nginx vhost `/etc/nginx/sites-available/app-biobot` proxies
-`app.biobotproject.org` to `http://127.0.0.1:8085` with the usual
-`X-Forwarded-*` headers. The certificate is a separate Certbot lineage
-(`/etc/letsencrypt/live/app.biobotproject.org`) obtained with
-`certbot --nginx -d app.biobotproject.org` and renewed by the existing
-`certbot.timer`. Nothing in the other vhosts is touched.
+Two host nginx vhosts proxy to `http://127.0.0.1:8085` with the usual
+`X-Forwarded-*` headers:
+
+| Vhost file | Host | Certificate lineage |
+|---|---|---|
+| `/etc/nginx/sites-available/app-wildfirealarm` | `app.wildfirealarm.org` | `/etc/letsencrypt/live/app.wildfirealarm.org` |
+| `/etc/nginx/sites-available/app-biobot` | `app.biobotproject.org` (legacy) | `/etc/letsencrypt/live/app.biobotproject.org` |
+
+Each certificate was obtained with `certbot --nginx -d <host>` and is
+renewed by the existing `certbot.timer`. Nothing in the other vhosts is
+touched. `DASHBOARD_URL` in `.env` is `https://app.wildfirealarm.org`, so
+incident emails link there.
+
+Retire the legacy host only after Notehub delivers to the new one: Notehub
+does not follow redirects on POST, so redirecting `/api/ingest/notehub`
+would drop sensor data.
 
 ### Updating
 
