@@ -45,6 +45,8 @@ services:
       DASHBOARD_URL: ${DASHBOARD_URL:-}
       # NASA FIRMS satellite hotspot cross-check on the Live Map; empty disables it
       FIRMS_MAP_KEY: ${FIRMS_MAP_KEY:-}
+      # Shared token wildfirealarm.org sends to read GET /site/sensors; empty keeps that endpoint closed
+      SITE_SENSORS_TOKEN: ${SITE_SENSORS_TOKEN:-}
     ports:
         - "3000:3000"
     depends_on:
